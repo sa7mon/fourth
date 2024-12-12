@@ -4,11 +4,10 @@ import (
 	"embed"
 	"fmt"
 	proxy "fourth/internal/proxy"
-	storage "fourth/internal/proxy_store"
+	"fourth/internal/proxy_store"
 	"github.com/elazarl/goproxy"
 	"log"
 	"net/http"
-	"sync"
 	"time"
 
 	"github.com/wailsapp/wails/v2"
@@ -19,11 +18,12 @@ import (
 //go:embed all:frontend/dist
 var assets embed.FS
 
-var history = storage.ProxyHistory{}
-
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
+
+	// make sample data
+	app.history.Requests = append(app.history.Requests, proxy_store.MakeSampleData())
 
 	p := goproxy.NewProxyHttpServer()
 	p.Verbose = true
@@ -42,44 +42,41 @@ func main() {
 			bytes := logger.LogResp(resp, ctx)
 			fmt.Println("OnResponse(): read bytes: ", len(bytes))
 
-			item := storage.ProxyHistoryItem{Req: ctx.Req, Res: ctx.Resp, ResBody: bytes, ReqTime: time.Now(), Sess: ctx.Session}
-			history.Store(item)
+			item := proxy_store.ProxyHistoryItem{Req: ctx.Req, Res: ctx.Resp, ResBody: bytes, ReqTime: time.Now(), Sess: ctx.Session}
+			app.history.Store(item)
 
 			//log.Printf("history length: %v", history.Length())
 
 			return resp
 		})
 
-	var wg sync.WaitGroup
+	//var wg sync.WaitGroup
 
 	log.Println("proxy running")
-	wg.Add(2)
 
-	go func() {
-		defer wg.Done()
-		proxyErr := http.ListenAndServe("localhost:8181", p)
-		log.Fatal(proxyErr)
-	}()
+	//wg.Add(1)
+	//go func() {
+	//	defer wg.Done()
+	//	proxyErr := http.ListenAndServe("localhost:8181", p)
+	//	log.Fatal(proxyErr)
+	//}()
 
-	// Create application with options
-	go func() {
-		err := wails.Run(&options.App{
-			Title:  "fourth",
-			Width:  1024,
-			Height: 768,
-			AssetServer: &assetserver.Options{
-				Assets: assets,
-			},
-			BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
-			OnStartup:        app.startup,
-			Bind: []interface{}{
-				app,
-			},
-		})
-		if err != nil {
-			println("Error:", err.Error())
-		}
-	}()
-
-	wg.Wait()
+	err := wails.Run(&options.App{
+		Title:  "fourth",
+		Width:  1024,
+		Height: 768,
+		AssetServer: &assetserver.Options{
+			Assets: assets,
+		},
+		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
+		OnStartup:        app.startup,
+		Bind: []interface{}{
+			app,
+			&proxy_store.ProxyHistoryItem{},
+		},
+	})
+	if err != nil {
+		println("Error:", err.Error())
+	}
+	//wg.Done()
 }

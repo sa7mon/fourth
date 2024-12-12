@@ -2,17 +2,19 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"fourth/internal/proxy_store"
 )
 
 // App struct
 type App struct {
-	ctx context.Context
+	ctx      context.Context
+	history  proxy_store.ProxyHistory
+	testData []string
 }
 
 // NewApp creates a new App application struct
 func NewApp() *App {
-	return &App{}
+	return &App{testData: []string{"apple", "banana", "peach"}}
 }
 
 // startup is called when the app starts. The context is saved
@@ -21,7 +23,14 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+func (a *App) GetHistory() []proxy_store.ProxyHistoryItem {
+	return a.history.Requests
+}
+
+func (a *App) AddSampleHistory() {
+	a.history.Requests = append(a.history.Requests, proxy_store.MakeSampleData())
+}
+
+func (a *App) GetTestData() []string {
+	return a.testData
 }

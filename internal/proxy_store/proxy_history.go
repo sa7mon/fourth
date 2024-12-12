@@ -1,7 +1,10 @@
-package storage
+package proxy_store
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -10,12 +13,51 @@ type ProxyHistory struct {
 }
 
 type ProxyHistoryItem struct {
-	ID      uint
+	ID      uint `json:"id"`
 	Req     *http.Request
 	Res     *http.Response
 	ResBody []byte
 	ReqTime time.Time
 	Sess    int64
+}
+
+func (ph *ProxyHistoryItem) MarshalJSON() ([]byte, error) {
+	fmt.Println(ph.Req.Method)
+
+	return json.Marshal(&struct {
+		ID  uint           `json:"id"`
+		Req HttpRequestDTO `json:"req"`
+	}{
+		ID: ph.ID,
+		Req: HttpRequestDTO{
+			Method:        ph.Req.Method,
+			URL:           ph.Req.URL.String(),
+			Proto:         ph.Req.Proto,
+			ContentLength: ph.Req.ContentLength,
+			Host:          ph.Req.Host,
+		},
+	})
+}
+
+type HttpRequestDTO struct {
+	Method string `json:"method"`
+	URL    string `json:"url"`
+	Proto  string `json:"proto"`
+	//ProtoMajor int
+	//ProtoMinor int
+	//Header           Header
+	//Body             io.ReadCloser
+	//GetBody          func() (io.ReadCloser, error)
+	ContentLength int64  `json:"content_length"`
+	Host          string `json:"host"`
+}
+
+func MakeSampleData() ProxyHistoryItem {
+	u, _ := url.Parse("https://google.com/wp-admin.php?admin=1")
+	dummyRequest := http.Request{Method: "GET", URL: u, Header: http.Header{
+		"User-Agent":    []string{"Go"},
+		"Authorization": []string{"bearer eyJ"}}, Proto: "HTTP/1.1"}
+	return ProxyHistoryItem{Req: &dummyRequest}
 }
 
 func (ph *ProxyHistory) Store(item ProxyHistoryItem) {
