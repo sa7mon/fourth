@@ -1,14 +1,13 @@
 import {useEffect, useState} from 'react';
 import './App.css';
-import {AddSampleHistory, GetHistory} from "../wailsjs/go/main/App";
+import {AddSampleHistory, GetHistory} from "../wailsjs/go/app/App";
 import {ProxyHistoryItem} from "./types/ProxyHistoryItem";
 
 function App() {
     const [historyItems, setHistoryItems] = useState<ProxyHistoryItem[]>([])
 
     useEffect(() => {
-        GetHistory().then((h) => {
-            console.log(h)
+        GetHistory().then((h:any) => {
             setHistoryItems(h)
         })
     }, [])
@@ -17,8 +16,7 @@ function App() {
         AddSampleHistory().then(() => {
             console.log("added sample history")
             return GetHistory()
-        }).then((h) => {
-            console.log(h)
+        }).then((h: any) => {
             setHistoryItems(h)
         })
     }

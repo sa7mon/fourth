@@ -2,7 +2,6 @@ package proxy_store
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/url"
 	"time"
@@ -22,8 +21,6 @@ type ProxyHistoryItem struct {
 }
 
 func (ph *ProxyHistoryItem) MarshalJSON() ([]byte, error) {
-	fmt.Println(ph.Req.Method)
-
 	return json.Marshal(&struct {
 		ID  uint           `json:"id"`
 		Req HttpRequestDTO `json:"req"`
