@@ -10,15 +10,14 @@ import (
 
 // App struct
 type App struct {
-	ctx      context.Context
-	wg       sync.WaitGroup
-	History  proxy_store.ProxyHistory
-	testData []string
+	ctx     context.Context
+	wg      sync.WaitGroup
+	History proxy_store.ProxyHistory
 }
 
 // NewApp creates a new App application struct
 func NewApp() *App {
-	return &App{testData: []string{"apple", "banana", "peach"}, wg: sync.WaitGroup{}}
+	return &App{wg: sync.WaitGroup{}}
 }
 
 // Startup is called when the app starts. The context is saved
@@ -44,9 +43,6 @@ func (a *App) GetHistory() []proxy_store.ProxyHistoryItem {
 }
 
 func (a *App) AddSampleHistory() {
-	a.History.Requests = append(a.History.Requests, proxy_store.MakeSampleData())
-}
-
-func (a *App) GetTestData() []string {
-	return a.testData
+	a.History.Store(proxy_store.MakeSampleData())
+	//a.History.Requests = append(a.History.Requests, proxy_store.MakeSampleData())
 }

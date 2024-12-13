@@ -9,7 +9,3 @@ export function AddSampleHistory() {
 export function GetHistory() {
   return window['go']['app']['App']['GetHistory']();
 }
-
-export function GetTestData() {
-  return window['go']['app']['App']['GetTestData']();
-}

@@ -5,5 +5,3 @@ import {proxy_store} from '../models';
 export function AddSampleHistory():Promise<void>;
 
 export function GetHistory():Promise<Array<proxy_store.ProxyHistoryItem>>;
-
-export function GetTestData():Promise<Array<string>>;

@@ -5,6 +5,7 @@ import (
 	"fourth/internal/proxy"
 	"fourth/internal/proxy_store"
 	"github.com/elazarl/goproxy"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"log"
 	"net/http"
 	"time"
@@ -31,10 +32,13 @@ func NewProxy(app *App) *goproxy.ProxyHttpServer {
 			item := proxy_store.ProxyHistoryItem{Req: ctx.Req, Res: ctx.Resp, ResBody: bytes, ReqTime: time.Now(), Sess: ctx.Session}
 			app.History.Store(item)
 
+			runtime.LogPrint(nil, "response gotten!")
+			//log.Println("response gotten!")
+
 			//log.Printf("history length: %v", history.Length())
 
 			return resp
 		})
 
-	return goproxy.NewProxyHttpServer()
+	return p
 }
