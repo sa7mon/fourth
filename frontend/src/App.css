@@ -57,3 +57,9 @@
     border: none;
     background-color: rgba(255, 255, 255, 1);
 }
+
+table.sticky-header th {
+    position: sticky;
+    top: 0;  /* 0px if you don't have a navbar, but something is required */
+    background: white;
+}
