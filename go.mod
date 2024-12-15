@@ -5,7 +5,7 @@ go 1.21
 toolchain go1.22.7
 
 require (
-	github.com/elazarl/goproxy v0.0.0-20240909085733-6741dbfc16a1
+	github.com/elazarl/goproxy v0.0.0-20241214220532-033b654b53fa
 	github.com/wailsapp/wails/v2 v2.9.2
 )
 
