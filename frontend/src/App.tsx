@@ -6,6 +6,7 @@ import {EventsOn} from "../wailsjs/runtime";
 import {Button, Col, Container, Row, Table} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss'
+import './styles/table.scss'
 
 type HistoryRowParams = {
     h: ProxyHistoryItem

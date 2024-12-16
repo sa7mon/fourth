@@ -1,6 +1,10 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
 tr.selected {
-  background-color: #0d6efd;
+  background-color: $indigo-200;
+
   td {
-    background-color: #0d6efd;
+    background-color: $indigo-200;
   }
 }
