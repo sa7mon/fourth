@@ -1,36 +1,14 @@
 import {useEffect, useState} from 'react';
 import './App.css';
-import {AddSampleHistory, GetHistory} from "../wailsjs/go/app/App";
+import {GetHistory} from "../wailsjs/go/app/App";
 import {ProxyHistoryItem} from "./types/ProxyHistoryItem";
 import {EventsOn} from "../wailsjs/runtime";
-import {Button, Col, Container, Row, Table} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss'
 import './styles/table.scss'
+import {HistoryTable} from "./components/HistoryTable";
 
-type HistoryRowParams = {
-    h: ProxyHistoryItem
-    id: number
-    onClick: any
-    selectedRow: number | undefined
-}
-
-function HistoryRow({h, id, onClick, selectedRow}: HistoryRowParams) {
-    const bgClass = (selectedRow === id ? "selected" : "")
-
-    return (
-        <tr style={{lineHeight: '12px'}} className={bgClass} data-row-id={id}
-            onClick={onClick}>
-            <td>{h.id}</td>
-            <td>{h.req.host}</td>
-            <td>{h.req.method}</td>
-            <td>{h.req.path}</td>
-            <td>{h.req.query}</td>
-            <td>{h.res?.status}</td>
-            <td>{h.res?.size}</td>
-        </tr>
-    )
-}
 
 function App() {
     const [historyItems, setHistoryItems] = useState<ProxyHistoryItem[]>([])
@@ -51,49 +29,12 @@ function App() {
         })
     })
 
-
-    const handleNew = (e: any) => {
-        AddSampleHistory().then(() => {
-            console.log("added sample history")
-            return GetHistory()
-        }).then((h: any) => {
-            setHistoryItems(h)
-        })
-    }
-
-    const handleRowClick = (e: React.MouseEvent<HTMLElement>) => {
-        let rowIdAttr = e.currentTarget.attributes.getNamedItem('data-row-id')
-        if (!rowIdAttr) {
-            console.error('[handleRowClick] data-row-id attribute was null')
-            return
-        }
-        console.log("setting selected row to ", Number(rowIdAttr.value))
-        setSelectedRow(Number(rowIdAttr.value))
-    }
-
     return (
         <div id="App">
             <Container fluid={true} style={{height: "50vh"}} className={"overflow-y-scroll"}>
                 <Row>
                     <Col>
-                        <Table striped={true} className={"sticky-header"}>
-                            <thead>
-                            <tr style={{lineHeight: '12px'}}>
-                                <th>ID</th>
-                                <th>Host</th>
-                                <th>Method</th>
-                                <th>Path</th>
-                                <th>Query</th>
-                                <th>Status</th>
-                                <th>Size</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {historyItems.map((h, i) => (
-                                <HistoryRow h={h} id={i} onClick={handleRowClick} selectedRow={selectedRow}/>
-                            ))}
-                            </tbody>
-                        </Table>
+                        <HistoryTable data={historyItems} setSelectedRow={setSelectedRow} selectedRow={selectedRow}/>
                     </Col>
                 </Row>
             </Container>
