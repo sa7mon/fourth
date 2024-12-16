@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss'
 import './styles/table.scss'
 import {HistoryTable} from "./components/HistoryTable";
+import {RequestDetails} from "./components/RequestDetails";
 
 
 function App() {
@@ -20,6 +21,10 @@ function App() {
             setHistoryItems(h)
         })
     }, [])
+
+    useEffect(() => {
+
+    }, [selectedRow]);
 
     EventsOn("proxy_new-response", (data: any) => {
         console.log("new proxy response!")
@@ -40,7 +45,12 @@ function App() {
             </Container>
             <Container fluid style={{height: "50vh"}}>
                 <Row className="bg-body-tertiary h-100 border-top border-secondary-subtle">
-                    <Col xs={6} className="border-end border-secondary-subtle">Request</Col>
+                    <Col xs={6} className="border-end border-secondary-subtle">
+                        {selectedRow && (
+                            <RequestDetails
+                                request={historyItems[selectedRow].req}/>
+                        )}
+                    </Col>
                     <Col xs={6}>Response</Col>
                 </Row>
             </Container>

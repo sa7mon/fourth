@@ -4,14 +4,21 @@ export type ProxyHistoryItem = {
     res?: Response
 }
 
-export type Request = {
-    method: string
+export interface Request {
     url: string
-    proto: string
-    content_length: number
-    host: string
+    method: string
     path: string
     query: string
+    proto: string
+    host: string
+
+    format(): string
+}
+
+export function formatRequest(r: Request): string {
+    let formatted = `${r.method} ${r.path}${r.query} ${r.proto}`
+    formatted += `\nHost: ${r.host}`
+    return formatted
 }
 
 export type Response = {
