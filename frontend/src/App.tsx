@@ -5,9 +5,35 @@ import {ProxyHistoryItem} from "./types/ProxyHistoryItem";
 import {EventsOn} from "../wailsjs/runtime";
 import {Button, Col, Container, Row, Table} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './style.scss'
+
+type HistoryRowParams = {
+    h: ProxyHistoryItem
+    id: number
+    onClick: any
+    selectedRow: number | undefined
+}
+
+function HistoryRow({h, id, onClick, selectedRow}: HistoryRowParams) {
+    const bgClass = (selectedRow === id ? "selected" : "")
+
+    return (
+        <tr style={{lineHeight: '12px'}} className={bgClass} data-row-id={id}
+            onClick={onClick}>
+            <td>{h.id}</td>
+            <td>{h.req.host}</td>
+            <td>{h.req.method}</td>
+            <td>{h.req.path}</td>
+            <td>{h.req.query}</td>
+            <td>{h.res?.status}</td>
+            <td>{h.res?.size}</td>
+        </tr>
+    )
+}
 
 function App() {
     const [historyItems, setHistoryItems] = useState<ProxyHistoryItem[]>([])
+    const [selectedRow, setSelectedRow] = useState<number | undefined>(undefined)
 
     // Fetch data on component load
     useEffect(() => {
@@ -34,11 +60,19 @@ function App() {
         })
     }
 
+    const handleRowClick = (e: React.MouseEvent<HTMLElement>) => {
+        let rowIdAttr = e.currentTarget.attributes.getNamedItem('data-row-id')
+        if (!rowIdAttr) {
+            console.error('[handleRowClick] data-row-id attribute was null')
+            return
+        }
+        console.log("setting selected row to ", Number(rowIdAttr.value))
+        setSelectedRow(Number(rowIdAttr.value))
+    }
+
     return (
         <div id="App">
             <Container fluid={true} style={{height: "50vh"}} className={"overflow-y-scroll"}>
-                {/*<Button onClick={handleNew}>New Sample Request</Button>*/}
-                {/*<br/>*/}
                 <Row>
                     <Col>
                         <Table striped={true} className={"sticky-header"}>
@@ -47,17 +81,15 @@ function App() {
                                 <th>ID</th>
                                 <th>Host</th>
                                 <th>Method</th>
-                                <th>URL</th>
+                                <th>Path</th>
+                                <th>Query</th>
+                                <th>Status</th>
+                                <th>Size</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {historyItems.map((h) => (
-                                <tr style={{lineHeight: '12px'}}>
-                                    <td>{h.id}</td>
-                                    <th>{h.req.host}</th>
-                                    <td>{h.req.method}</td>
-                                    <td>{h.req.url}</td>
-                                </tr>
+                            {historyItems.map((h, i) => (
+                                <HistoryRow h={h} id={i} onClick={handleRowClick} selectedRow={selectedRow}/>
                             ))}
                             </tbody>
                         </Table>
@@ -65,7 +97,10 @@ function App() {
                 </Row>
             </Container>
             <Container fluid style={{height: "50vh"}}>
-                I'm in the lower container
+                <Row className="bg-body-tertiary h-100 border-top border-secondary-subtle">
+                    <Col xs={6} className="border-end border-secondary-subtle">Request</Col>
+                    <Col xs={6}>Response</Col>
+                </Row>
             </Container>
         </div>
     )

@@ -21,18 +21,30 @@ type ProxyHistoryItem struct {
 }
 
 func (ph *ProxyHistoryItem) MarshalJSON() ([]byte, error) {
+	d := HttpRequestDTO{
+		Method:        ph.Req.Method,
+		URL:           ph.Req.URL.String(),
+		Proto:         ph.Req.Proto,
+		ContentLength: ph.Req.ContentLength,
+		Host:          ph.Req.URL.Host,
+		Path:          ph.Req.URL.Path,
+		Query:         ph.Req.URL.Query().Encode(),
+	}
+
+	resD := HttpResponseDTO{}
+	if ph.Res != nil {
+		resD.Status = ph.Res.StatusCode
+		resD.Size = ph.Res.ContentLength
+	}
+
 	return json.Marshal(&struct {
-		ID  uint           `json:"id"`
-		Req HttpRequestDTO `json:"req"`
+		ID  uint            `json:"id"`
+		Req HttpRequestDTO  `json:"req"`
+		Res HttpResponseDTO `json:"res"`
 	}{
-		ID: ph.ID,
-		Req: HttpRequestDTO{
-			Method:        ph.Req.Method,
-			URL:           ph.Req.URL.String(),
-			Proto:         ph.Req.Proto,
-			ContentLength: ph.Req.ContentLength,
-			Host:          ph.Req.Host,
-		},
+		ID:  ph.ID,
+		Req: d,
+		Res: resD,
 	})
 }
 
@@ -43,10 +55,17 @@ type HttpRequestDTO struct {
 	//ProtoMajor int
 	//ProtoMinor int
 	//Header           Header
-	//Body             io.ReadCloser
-	//GetBody          func() (io.ReadCloser, error)
 	ContentLength int64  `json:"content_length"`
 	Host          string `json:"host"`
+	Path          string `json:"path"`
+	Query         string `json:"query"`
+}
+
+type HttpResponseDTO struct {
+	Status int   `json:"status"`
+	Size   int64 `json:"size"` // in bytes
+	//Body             io.ReadCloser
+	//GetBody          func() (io.ReadCloser, error)
 }
 
 func MakeSampleData() ProxyHistoryItem {
@@ -70,5 +89,8 @@ func (ph *ProxyHistoryItem) Map() map[string]string {
 		"method": ph.Req.Method,
 		"time":   ph.ReqTime.Format("2006-01-02 15:04:05"),
 		"url":    ph.Req.URL.String(),
+		"host":   ph.Req.Host,
+		"path":   ph.Req.URL.Path,
+		"status": ph.Res.Status,
 	}
 }
