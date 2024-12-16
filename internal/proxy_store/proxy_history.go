@@ -2,6 +2,7 @@ package proxy_store
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
 	"time"
@@ -31,6 +32,13 @@ func (ph *ProxyHistoryItem) MarshalJSON() ([]byte, error) {
 		Query:         ph.Req.URL.Query().Encode(),
 	}
 
+	headers := make(map[string]string)
+	for name, values := range ph.Req.Header {
+		headers[name] = values[0] // Only take the first header value
+	}
+	d.Headers = headers
+	fmt.Println(headers)
+
 	resD := HttpResponseDTO{}
 	if ph.Res != nil {
 		resD.Status = ph.Res.StatusCode
@@ -55,10 +63,11 @@ type HttpRequestDTO struct {
 	//ProtoMajor int
 	//ProtoMinor int
 	//Header           Header
-	ContentLength int64  `json:"content_length"`
-	Host          string `json:"host"`
-	Path          string `json:"path"`
-	Query         string `json:"query"`
+	Host          string            `json:"host"`
+	Path          string            `json:"path"`
+	Query         string            `json:"query"`
+	Headers       map[string]string `json:"headers"`
+	ContentLength int64             `json:"content_length"`
 }
 
 type HttpResponseDTO struct {

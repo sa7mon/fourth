@@ -11,13 +11,18 @@ export interface Request {
     query: string
     proto: string
     host: string
+    headers: Map<string, string>
 
     format(): string
 }
 
 export function formatRequest(r: Request): string {
     let formatted = `${r.method} ${r.path}${r.query} ${r.proto}`
-    formatted += `\nHost: ${r.host}`
+    formatted += `\nHost: ${r.host}\n`
+
+    for (const [key, value] of Object.entries(r.headers)) {
+        formatted += `${key}: ${value}\n`
+    }
     return formatted
 }
 
