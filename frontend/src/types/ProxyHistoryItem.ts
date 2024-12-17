@@ -12,8 +12,6 @@ export interface Request {
     proto: string
     host: string
     headers: Map<string, string>
-
-    format(): string
 }
 
 export function formatRequest(r: Request): string {
@@ -27,11 +25,20 @@ export function formatRequest(r: Request): string {
 }
 
 export type Response = {
+    body: string
+    headers: Map<string, string>
     proto: string
-    status: number
     size: number
+    status: number
 }
 
 export function formatResponse(r: Response): string {
-    return `${r.proto} ${r.status}`
+    let formatted = `${r.proto} ${r.status}\n`
+    console.log(r.headers)
+    for (const [key, value] of Object.entries(r.headers)) {
+        formatted += `${key}: ${value}\n`
+    }
+    formatted += `Content-Length: ${r.size}\n\n`
+    formatted += `${r.body}\n`
+    return formatted
 }
