@@ -32,9 +32,11 @@ export function HistoryTable({data, selectedRow, setSelectedRow}: HistoryTablePa
             </tr>
             </thead>
             <tbody>
-            {data.map((h, i) => (
-                <HistoryRow h={h} id={i} onClick={handleRowClick} selectedRow={selectedRow}/>
-            ))}
+            {data && (
+                data.map((h, i) => (
+                    <HistoryRow h={h} id={i} onClick={handleRowClick} selectedRow={selectedRow}/>
+                ))
+            )}
             </tbody>
         </Table>
     )

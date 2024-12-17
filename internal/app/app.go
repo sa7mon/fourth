@@ -42,7 +42,7 @@ func (a *App) GetHistory() []proxy_store.ProxyHistoryItem {
 	return a.History.Requests
 }
 
-func (a *App) AddSampleHistory() {
-	a.History.Store(proxy_store.MakeSampleData())
-	//a.History.Requests = append(a.History.Requests, proxy_store.MakeSampleData())
-}
+//func (a *App) AddSampleHistory() {
+//	a.History.Store(proxy_store.MakeSampleData())
+//	//a.History.Requests = append(a.History.Requests, proxy_store.MakeSampleData())
+//}

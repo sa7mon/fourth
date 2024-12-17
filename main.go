@@ -17,7 +17,7 @@ func main() {
 	app := app2.NewApp()
 
 	// make sample data
-	app.History.Requests = append(app.History.Requests, proxy_store.MakeSampleData())
+	//app.History.Requests = append(app.History.Requests, proxy_store.MakeSampleData())
 
 	err := wails.Run(&options.App{
 		Title:  "fourth",

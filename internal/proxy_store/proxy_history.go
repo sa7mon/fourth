@@ -39,7 +39,7 @@ func (ph *ProxyHistoryItem) MarshalJSON() ([]byte, error) {
 	d.Headers = headers
 	fmt.Println(headers)
 
-	resD := HttpResponseDTO{}
+	resD := HttpResponseDTO{Proto: ph.Res.Proto}
 	if ph.Res != nil {
 		resD.Status = ph.Res.StatusCode
 		resD.Size = ph.Res.ContentLength
@@ -71,8 +71,9 @@ type HttpRequestDTO struct {
 }
 
 type HttpResponseDTO struct {
-	Status int   `json:"status"`
-	Size   int64 `json:"size"` // in bytes
+	Status int    `json:"status"`
+	Size   int64  `json:"size"` // in bytes
+	Proto  string `json:"proto"`
 	//Body             io.ReadCloser
 	//GetBody          func() (io.ReadCloser, error)
 }

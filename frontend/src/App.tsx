@@ -9,6 +9,7 @@ import './style.scss'
 import './styles/table.scss'
 import {HistoryTable} from "./components/HistoryTable";
 import {RequestDetails} from "./components/RequestDetails";
+import {ResponseDetails} from "./components/ResponseDetails";
 
 
 function App() {
@@ -51,7 +52,11 @@ function App() {
                                 request={historyItems[selectedRow].req}/>
                         )}
                     </Col>
-                    <Col xs={6}>Response</Col>
+                    <Col xs={6}>
+                        {selectedRow && (
+                            <ResponseDetails response={historyItems[selectedRow].res}/>
+                        )}
+                    </Col>
                 </Row>
             </Container>
         </div>

@@ -1,7 +1,7 @@
 export type ProxyHistoryItem = {
     id: number
     req: Request
-    res?: Response
+    res: Response
 }
 
 export interface Request {
@@ -27,6 +27,11 @@ export function formatRequest(r: Request): string {
 }
 
 export type Response = {
+    proto: string
     status: number
     size: number
+}
+
+export function formatResponse(r: Response): string {
+    return `${r.proto} ${r.status}`
 }
