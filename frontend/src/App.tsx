@@ -37,25 +37,45 @@ function App() {
 
     return (
         <div id="App">
-            <Container fluid={true} style={{height: "50vh"}} className="overflow-y-scroll">
+            <Container fluid={true} style={{height: "100vh"}}>
                 <Row>
+                    <Col xs={1} className="border-end border-secondary-subtle">
+                        <ul className="nav flex-column">
+                            <li className="nav-item">
+                                <a className="nav-link active" aria-current="page" href="#">Active</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="#">Link</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="#">Link</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link disabled" aria-disabled="true">Disabled</a>
+                            </li>
+                        </ul>
+                    </Col>
                     <Col>
-                        <HistoryTable data={historyItems} setSelectedRow={setSelectedRow} selectedRow={selectedRow}/>
-                    </Col>
-                </Row>
-            </Container>
-            <Container fluid style={{height: "50vh"}}>
-                <Row className="bg-body-tertiary h-100 border-top border-secondary-subtle">
-                    <Col xs={6} className="border-end border-secondary-subtle">
-                        {selectedRow && (
-                            <RequestDetails
-                                request={historyItems[selectedRow].req}/>
-                        )}
-                    </Col>
-                    <Col xs={6} style={{maxHeight: "50vh"}} className="p-2 text-start">
-                        {selectedRow && (
-                            <ResponseDetails response={historyItems[selectedRow].res}/>
-                        )}
+                        <Row style={{height: "50vh"}} className="overflow-y-scroll">
+                            <Col>
+                                <HistoryTable data={historyItems} setSelectedRow={setSelectedRow}
+                                              selectedRow={selectedRow}/>
+                            </Col>
+                        </Row>
+                        <Row className="bg-body-tertiary h-100 border-top border-secondary-subtle"
+                             style={{height: "50vh"}}>
+                            <Col xs={6} className="border-end border-secondary-subtle">
+                                {selectedRow && (
+                                    <RequestDetails
+                                        request={historyItems[selectedRow].req}/>
+                                )}
+                            </Col>
+                            <Col xs={6} style={{maxHeight: "50vh"}} className="p-2 text-start">
+                                {selectedRow && (
+                                    <ResponseDetails response={historyItems[selectedRow].res}/>
+                                )}
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
             </Container>
