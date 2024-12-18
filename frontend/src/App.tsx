@@ -37,7 +37,7 @@ function App() {
 
     return (
         <div id="App">
-            <Container fluid={true} style={{height: "50vh"}} className={"overflow-y-scroll"}>
+            <Container fluid={true} style={{height: "50vh"}} className="overflow-y-scroll">
                 <Row>
                     <Col>
                         <HistoryTable data={historyItems} setSelectedRow={setSelectedRow} selectedRow={selectedRow}/>
@@ -52,7 +52,7 @@ function App() {
                                 request={historyItems[selectedRow].req}/>
                         )}
                     </Col>
-                    <Col xs={6}>
+                    <Col xs={6} style={{maxHeight: "50vh"}} className="p-2 text-start">
                         {selectedRow && (
                             <ResponseDetails response={historyItems[selectedRow].res}/>
                         )}
