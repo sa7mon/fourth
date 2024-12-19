@@ -1,4 +1,5 @@
 import {formatRequest, Request} from '../types/ProxyHistoryItem'
+import {Highlighted} from "./Highlighted";
 
 type RequestDetailsParams = {
     request: Request
@@ -7,10 +8,8 @@ type RequestDetailsParams = {
 export function RequestDetails({request}: RequestDetailsParams) {
     return (
         <div className={"p-2 text-start"}>
-            <strong className="mb-3 d-block">Request</strong>
-            <pre className="text-start">
-                <code>{formatRequest(request)}</code>
-            </pre>
+            <strong className="mb-1 d-block">Request</strong>
+            <Highlighted data={formatRequest(request)}/>
         </div>
     )
 }
