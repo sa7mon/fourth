@@ -4,12 +4,15 @@ import {GetHistory} from "../wailsjs/go/app/App";
 import {ProxyHistoryItem} from "./types/ProxyHistoryItem";
 import {EventsOn} from "../wailsjs/runtime";
 import {Col, Container, Row} from "react-bootstrap";
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss'
 import './styles/table.scss'
 import {HistoryTable} from "./components/HistoryTable";
 import {RequestDetails} from "./components/RequestDetails";
 import {ResponseDetails} from "./components/ResponseDetails";
+import {faList, faRepeat} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Sidebar} from "./components/Sidebar";
 
 
 function App() {
@@ -39,21 +42,20 @@ function App() {
         <div id="App">
             <Container fluid={true} style={{height: "100vh"}}>
                 <Row>
-                    <Col xs={1} className="border-end border-secondary-subtle">
-                        <ul className="nav flex-column">
-                            <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="#">Active</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Link</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Link</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link disabled" aria-disabled="true">Disabled</a>
-                            </li>
-                        </ul>
+                    <Col xs={2} className="border-end border-secondary-subtle">
+                        <Sidebar/>
+                        {/*<ul className="nav flex-column">*/}
+                        {/*    <li className="nav-item">*/}
+                        {/*        <a className="nav-link active p-0 text-start link-primary" aria-current="page" href="#">*/}
+                        {/*            <FontAwesomeIcon icon={faList}/> Requests*/}
+                        {/*        </a>*/}
+                        {/*    </li>*/}
+                        {/*    <li className="nav-item">*/}
+                        {/*        <a className="nav-link p-0 text-start" href="#">*/}
+                        {/*            <FontAwesomeIcon icon={faRepeat}/> Editor*/}
+                        {/*        </a>*/}
+                        {/*    </li>*/}
+                        {/*</ul>*/}
                     </Col>
                     <Col>
                         <Row style={{height: "50vh"}} className="overflow-y-scroll">
