@@ -3,14 +3,24 @@ import Prism from "prismjs";
 import '../styles/prism-one-light.css'
 import {useEffect} from "react";
 
-export const Highlighted = (data: any) => {
+/**
+ * HighlightedParams should closely reflect RFC2616
+ * https://www.rfc-editor.org/rfc/rfc2616#section-4
+ */
+export type HighlightedParams = {
+    startLine: string
+    headers: string
+    body: string
+}
+
+export const Highlighted = ({startLine, headers, body}: HighlightedParams) => {
     useEffect(() => {
         Prism.highlightAll()
-    }, [data]);
+    }, [startLine, headers, body]);
 
     return (
-        <pre className="text-start">
-            <code className="language-html">{data.data}</code>
+        <pre className="text-start line-numbers">
+            <code className="language-html">{`${startLine}${headers}${body}`}</code>
         </pre>
     )
 }

@@ -4,15 +4,11 @@ import {GetHistory} from "../wailsjs/go/app/App";
 import {ProxyHistoryItem} from "./types/ProxyHistoryItem";
 import {EventsOn} from "../wailsjs/runtime";
 import {Col, Container, Row} from "react-bootstrap";
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss'
 import './styles/table.scss'
 import {HistoryTable} from "./components/HistoryTable";
-import {RequestDetails} from "./components/RequestDetails";
-import {ResponseDetails} from "./components/ResponseDetails";
-import {faList, faRepeat} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Sidebar} from "./components/Sidebar";
+import {HttpMessageDetails} from "./components/HttpMessageDetails";
 
 
 function App() {
@@ -56,13 +52,12 @@ function App() {
                              style={{height: "50vh"}}>
                             <Col xs={6} className="border-end border-secondary-subtle">
                                 {selectedRow && (
-                                    <RequestDetails
-                                        request={historyItems[selectedRow].req}/>
+                                    <HttpMessageDetails request={historyItems[selectedRow].req}/>
                                 )}
                             </Col>
                             <Col xs={6} style={{maxHeight: "50vh"}} className="p-2 text-start">
                                 {selectedRow && (
-                                    <ResponseDetails response={historyItems[selectedRow].res}/>
+                                    <HttpMessageDetails response={historyItems[selectedRow].res}/>
                                 )}
                             </Col>
                         </Row>
