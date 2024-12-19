@@ -19,7 +19,7 @@ export function HistoryTable({data, selectedRow, setSelectedRow}: HistoryTablePa
     }
 
     return (
-        <Table striped={true} className={"sticky-header table-sm"}>
+        <Table striped={true} className={"sticky-header table-sm c-default"}>
             <thead>
             <tr style={{lineHeight: '12px'}} className="text-start">
                 <th>ID</th>
@@ -53,7 +53,7 @@ function HistoryRow({h, id, onClick, selectedRow}: HistoryRowParams) {
     const bgClass = (selectedRow === id ? "selected" : "")
 
     return (
-        <tr style={{lineHeight: '12px'}} className={bgClass + " text-start"} data-row-id={id}
+        <tr style={{lineHeight: '12px'}} className={bgClass + " text-start unselectable"} data-row-id={id}
             onClick={onClick}>
             <td>{h.id}</td>
             <td>{h.req.host}</td>

@@ -42,20 +42,8 @@ function App() {
         <div id="App">
             <Container fluid={true} style={{height: "100vh"}}>
                 <Row>
-                    <Col xs={2} className="border-end border-secondary-subtle">
+                    <Col style={{maxWidth: "150px", height: "100vh"}} className="border-end border-secondary-subtle">
                         <Sidebar/>
-                        {/*<ul className="nav flex-column">*/}
-                        {/*    <li className="nav-item">*/}
-                        {/*        <a className="nav-link active p-0 text-start link-primary" aria-current="page" href="#">*/}
-                        {/*            <FontAwesomeIcon icon={faList}/> Requests*/}
-                        {/*        </a>*/}
-                        {/*    </li>*/}
-                        {/*    <li className="nav-item">*/}
-                        {/*        <a className="nav-link p-0 text-start" href="#">*/}
-                        {/*            <FontAwesomeIcon icon={faRepeat}/> Editor*/}
-                        {/*        </a>*/}
-                        {/*    </li>*/}
-                        {/*</ul>*/}
                     </Col>
                     <Col>
                         <Row style={{height: "50vh"}} className="overflow-y-scroll">

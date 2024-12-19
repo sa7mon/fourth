@@ -31,7 +31,7 @@ func NewProxy(app *App) *goproxy.ProxyHttpServer {
 
 			item := proxy_store.ProxyHistoryItem{Req: ctx.Req, Res: ctx.Resp, ResBody: bytes, ReqTime: time.Now(), Sess: ctx.Session}
 			app.History.Store(item)
-			runtime.EventsEmit(app.ctx, "proxy_new-response")
+			runtime.EventsEmit(app.Ctx, "proxy_new-response")
 			return resp
 		})
 

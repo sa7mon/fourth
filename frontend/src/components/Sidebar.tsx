@@ -7,7 +7,7 @@ export const Sidebar = () => {
     return (
         <div className="d-flex flex-column flex-shrink-0 bg-light text-start pt-4">
             <ul className="nav nav-pills flex-column mb-auto">
-                <li className="nav-item">
+                <li className="nav-item d-inline">
                     <a href="#" className="nav-link active" aria-current="page">
                         {/*<svg className="bi me-2" width="16" height="16">*/}
                         {/*    <use xlinkHref="#home"></use>*/}
@@ -15,7 +15,7 @@ export const Sidebar = () => {
                         <FontAwesomeIcon icon={faList}/> Requests
                     </a>
                 </li>
-                <li>
+                <li className="d-inline">
                     <a href="#" className="nav-link link-dark">
                         {/*<svg className="bi me-2" width="16" height="16">*/}
                         {/*    <use xlinkHref="#speedometer2"></use>*/}

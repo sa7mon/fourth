@@ -10,7 +10,7 @@ import (
 
 // App struct
 type App struct {
-	ctx     context.Context
+	Ctx     context.Context
 	wg      sync.WaitGroup
 	History proxy_store.ProxyHistory
 }
@@ -23,7 +23,7 @@ func NewApp() *App {
 // Startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) Startup(ctx context.Context) {
-	a.ctx = ctx
+	a.Ctx = ctx
 	a.wg.Add(1)
 	go func() {
 		defer a.wg.Done()
