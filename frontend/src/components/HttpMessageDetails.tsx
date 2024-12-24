@@ -71,16 +71,6 @@ const MessageDetailsContextMenu = () => {
             <Item onClick={sendToEditor}>
                 Edit
             </Item>
-            {/*<Item onClick={handleItemClick}>*/}
-            {/*    Item 2*/}
-            {/*</Item>*/}
-            {/*<Separator/>*/}
-            {/*<Submenu label="Submenu">*/}
-            {/*    <Item onClick={handleItemClick}>*/}
-            {/*        Sub Item 1*/}
-            {/*    </Item>*/}
-            {/*    <Item onClick={handleItemClick}>Sub Item 2</Item>*/}
-            {/*</Submenu>*/}
         </Menu>
     )
 }

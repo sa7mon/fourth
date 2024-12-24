@@ -1,27 +1,26 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faList, faRepeat} from "@fortawesome/free-solid-svg-icons";
+import {faList} from "@fortawesome/free-solid-svg-icons";
 import "./Sidebar.scss"
 import {faFilePen} from "@fortawesome/free-solid-svg-icons/faFilePen";
+import {NavLink} from "react-router-dom";
 
 export const Sidebar = () => {
     return (
         <div className="d-flex flex-column flex-shrink-0 bg-light text-start pt-4">
             <ul className="nav nav-pills flex-column mb-auto">
                 <li className="nav-item d-inline">
-                    <a href="#" className="nav-link active" aria-current="page">
-                        {/*<svg className="bi me-2" width="16" height="16">*/}
-                        {/*    <use xlinkHref="#home"></use>*/}
-                        {/*</svg>*/}
+                    <NavLink to="/" end className={({isActive}) =>
+                        isActive ? "nav-link active" : "nav-link link-dark"
+                    }>
                         <FontAwesomeIcon icon={faList}/> Requests
-                    </a>
+                    </NavLink>
                 </li>
                 <li className="d-inline">
-                    <a href="#" className="nav-link link-dark">
-                        {/*<svg className="bi me-2" width="16" height="16">*/}
-                        {/*    <use xlinkHref="#speedometer2"></use>*/}
-                        {/*</svg>*/}
+                    <NavLink to="/editor" end className={({isActive}) =>
+                        isActive ? "nav-link active" : "nav-link link-dark"
+                    }>
                         <FontAwesomeIcon icon={faFilePen}/> Editor
-                    </a>
+                    </NavLink>
                 </li>
             </ul>
         </div>
