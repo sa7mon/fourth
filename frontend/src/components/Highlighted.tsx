@@ -1,6 +1,7 @@
 import Prism from "prismjs";
 // import '../styles/prism.css'
-import '../styles/prism-one-light.css'
+// import '../styles/prism-one-light.css'
+import '../styles/okaidia.css'
 import {useEffect} from "react";
 
 /**
@@ -19,8 +20,9 @@ export const Highlighted = ({startLine, headers, body}: HighlightedParams) => {
     }, [startLine, headers, body]);
 
     return (
-        <pre className="text-start line-numbers">
-            <code className="language-html">{`${startLine}${headers}${body}`}</code>
+        <pre className="text-start line-numbers pt-2">
+            <code className="">{`${startLine}${headers}`}</code>
+            <code className="language-html">{`${body}`}</code>
         </pre>
     )
 }

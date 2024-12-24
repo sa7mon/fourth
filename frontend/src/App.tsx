@@ -55,7 +55,7 @@ function App() {
                                     <HttpMessageDetails request={historyItems[selectedRow].req}/>
                                 )}
                             </Col>
-                            <Col xs={6} style={{maxHeight: "50vh"}} className="p-2 text-start">
+                            <Col xs={6} style={{maxHeight: "50vh"}} className="p-2 text-start overflow-y-auto">
                                 {selectedRow && (
                                     <HttpMessageDetails response={historyItems[selectedRow].res}/>
                                 )}
