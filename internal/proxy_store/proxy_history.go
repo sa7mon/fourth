@@ -78,9 +78,20 @@ type HttpResponseDTO struct {
 }
 
 func (ph *ProxyHistory) Store(item ProxyHistoryItem) {
+	item.ID = uint(len(ph.Requests) + 1)
 	ph.Requests = append(ph.Requests, item)
 }
 
 func (ph *ProxyHistory) Length() int {
 	return len(ph.Requests)
+}
+
+func (ph *ProxyHistory) Get(id uint) ProxyHistoryItem {
+	return ph.Requests[id-1]
+	//for _, request := range ph.Requests {
+	//	if request.ID == id {
+	//		return &request, nil
+	//	}
+	//}
+	//return nil, errors.New("id not found")
 }

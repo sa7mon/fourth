@@ -9,7 +9,6 @@ import '../styles/table.scss'
 import {HistoryTable} from "../components/HistoryTable";
 import {HttpMessageDetails} from "../components/HttpMessageDetails";
 
-
 function RequestsView() {
     const [historyItems, setHistoryItems] = useState<ProxyHistoryItem[]>([])
     const [selectedRow, setSelectedRow] = useState<number | undefined>(undefined)
@@ -20,10 +19,6 @@ function RequestsView() {
             setHistoryItems(h)
         })
     }, [])
-
-    useEffect(() => {
-
-    }, [selectedRow]);
 
     EventsOn("proxy_new-response", (data: any) => {
         GetHistory().then((h: any) => {
@@ -43,12 +38,12 @@ function RequestsView() {
                  style={{height: "50vh"}}>
                 <Col xs={6} className="border-end border-secondary-subtle">
                     {selectedRow && (
-                        <HttpMessageDetails request={historyItems[selectedRow].req}/>
+                        <HttpMessageDetails request={historyItems[selectedRow].req} id={historyItems[selectedRow].id}/>
                     )}
                 </Col>
                 <Col xs={6} style={{maxHeight: "50vh"}} className="p-2 text-start overflow-y-auto">
                     {selectedRow && (
-                        <HttpMessageDetails response={historyItems[selectedRow].res}/>
+                        <HttpMessageDetails response={historyItems[selectedRow].res} id={historyItems[selectedRow].id}/>
                     )}
                 </Col>
             </Row>

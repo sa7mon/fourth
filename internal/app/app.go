@@ -10,9 +10,10 @@ import (
 
 // App struct
 type App struct {
-	Ctx     context.Context
-	wg      sync.WaitGroup
-	History proxy_store.ProxyHistory
+	Ctx         context.Context
+	wg          sync.WaitGroup
+	History     proxy_store.ProxyHistory
+	EditorItems []proxy_store.ProxyHistoryItem
 }
 
 // NewApp creates a new App application struct
@@ -42,7 +43,8 @@ func (a *App) GetHistory() []proxy_store.ProxyHistoryItem {
 	return a.History.Requests
 }
 
-//func (a *App) AddSampleHistory() {
-//	a.History.Store(proxy_store.MakeSampleData())
-//	//a.History.Requests = append(a.History.Requests, proxy_store.MakeSampleData())
-//}
+func (a *App) GetEditorItems() []proxy_store.ProxyHistoryItem { return a.EditorItems }
+
+func (a *App) NewEditorItem(id uint) {
+	a.EditorItems = append(a.EditorItems, a.History.Get(id))
+}

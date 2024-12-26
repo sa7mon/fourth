@@ -1,16 +1,18 @@
 import {Highlighted} from "./Highlighted";
 import {Request, Response} from '../types/ProxyHistoryItem'
-import {Item, Menu, Separator, Submenu, useContextMenu} from "react-contexify";
+import {Item, Menu, useContextMenu} from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
+import {NewEditorItem} from "../../wailsjs/go/app/App";
 
 export type HttpMessageDetailsParams = {
     request?: Request
     response?: Response
+    id: number
 }
 
 const MENU_ID = "HttpMessageDetails";
 
-export const HttpMessageDetails = ({request, response}: HttpMessageDetailsParams) => {
+export const HttpMessageDetails = ({request, response, id}: HttpMessageDetailsParams) => {
     if (!request && !response) {
         console.error("[HttpMessageDetails] either request or response is required")
     }
@@ -25,6 +27,22 @@ export const HttpMessageDetails = ({request, response}: HttpMessageDetailsParams
         show({
             event: e,
         });
+    }
+
+    const MessageDetailsContextMenu = () => {
+        function sendToEditor({event, props, triggerEvent, data}: any) {
+            console.log(event, props, triggerEvent, data);
+            console.log(request)
+            NewEditorItem(id);
+        }
+
+        return (
+            <Menu id={MENU_ID}>
+                <Item onClick={sendToEditor}>
+                    Edit
+                </Item>
+            </Menu>
+        )
     }
 
     if (request) {
@@ -61,16 +79,3 @@ export const HttpMessageDetails = ({request, response}: HttpMessageDetailsParams
     return <></>
 }
 
-const MessageDetailsContextMenu = () => {
-    function sendToEditor({event, props, triggerEvent, data}: any) {
-        console.log(event, props, triggerEvent, data);
-    }
-
-    return (
-        <Menu id={MENU_ID}>
-            <Item onClick={sendToEditor}>
-                Edit
-            </Item>
-        </Menu>
-    )
-}
