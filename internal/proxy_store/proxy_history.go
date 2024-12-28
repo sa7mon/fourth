@@ -85,13 +85,3 @@ func (ph *ProxyHistory) Store(item ProxyHistoryItem) {
 func (ph *ProxyHistory) Length() int {
 	return len(ph.Requests)
 }
-
-func (ph *ProxyHistory) Get(id uint) ProxyHistoryItem {
-	return ph.Requests[id-1]
-	//for _, request := range ph.Requests {
-	//	if request.ID == id {
-	//		return &request, nil
-	//	}
-	//}
-	//return nil, errors.New("id not found")
-}

@@ -6,4 +6,6 @@ export function GetEditorItems():Promise<Array<proxy_store.ProxyHistoryItem>>;
 
 export function GetHistory():Promise<Array<proxy_store.ProxyHistoryItem>>;
 
+export function GetHistoryItem(arg1:number):Promise<proxy_store.ProxyHistoryItem>;
+
 export function NewEditorItem(arg1:number):Promise<void>;

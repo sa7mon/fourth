@@ -46,5 +46,9 @@ func (a *App) GetHistory() []proxy_store.ProxyHistoryItem {
 func (a *App) GetEditorItems() []proxy_store.ProxyHistoryItem { return a.EditorItems }
 
 func (a *App) NewEditorItem(id uint) {
-	a.EditorItems = append(a.EditorItems, a.History.Get(id))
+	a.EditorItems = append(a.EditorItems, a.GetHistoryItem(id))
+}
+
+func (a *App) GetHistoryItem(id uint) proxy_store.ProxyHistoryItem {
+	return a.History.Requests[id-1]
 }
