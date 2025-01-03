@@ -16,7 +16,6 @@ function EditorView() {
     }, [])
 
     const handleClick = (id: number) => {
-        console.log(id)
         setActiveItemId(id)
         setActiveItem(items.find((item) => item.id === id))
     }
@@ -34,7 +33,7 @@ function EditorView() {
             <Col className="border-end border-secondary-subtle">
                 {activeItem && (
                     // <HttpMessageDetails request={activeItem.req} id={activeItem.id}/>
-                    <Editor/>
+                    <Editor code={activeItem.req}/>
                 )}
             </Col>
             <Col style={{maxHeight: "50vh"}} className="p-2 text-start overflow-y-auto">
