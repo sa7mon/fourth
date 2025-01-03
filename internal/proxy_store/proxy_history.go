@@ -36,7 +36,7 @@ func (ph *ProxyHistoryItem) MarshalJSON() ([]byte, error) {
 	}
 	d.Headers = headers
 
-	resD := HttpResponseDTO{Proto: ph.Res.Proto, Body: string(ph.ResBody)}
+	resD := HttpResponseDTO{Proto: ph.Res.Proto, Body: string(ph.ResBody)} // todo: not throw nil pointer if the server doesn't respond and the context is cancelled
 	if ph.Res != nil {
 		resD.Status = ph.Res.StatusCode
 		resD.Size = ph.Res.ContentLength

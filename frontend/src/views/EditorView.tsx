@@ -4,6 +4,7 @@ import {GetEditorItems, GetHistory, GetHistoryItem, NewEditorItem} from "../../w
 import {useEffect, useState} from "react";
 import {ProxyHistoryItem} from "../types/ProxyHistoryItem";
 import {HttpMessageDetails} from "../components/HttpMessageDetails";
+import {Editor} from "../components/Editor";
 
 function EditorView() {
     const [items, setItems] = useState<ProxyHistoryItem[]>([])
@@ -32,7 +33,8 @@ function EditorView() {
             </Col>
             <Col className="border-end border-secondary-subtle">
                 {activeItem && (
-                    <HttpMessageDetails request={activeItem.req} id={activeItem.id}/>
+                    // <HttpMessageDetails request={activeItem.req} id={activeItem.id}/>
+                    <Editor/>
                 )}
             </Col>
             <Col style={{maxHeight: "50vh"}} className="p-2 text-start overflow-y-auto">
