@@ -3,12 +3,12 @@ import "./EditorView.scss"
 import {GetEditorItems, GetHistory, GetHistoryItem, NewEditorItem} from "../../wailsjs/go/app/App";
 import {useEffect, useState} from "react";
 import {ProxyHistoryItem} from "../types/ProxyHistoryItem";
-import {HttpMessageDetails} from "../components/HttpMessageDetails";
 import {Editor} from "../components/Editor";
+import {EditorItem} from "../types/EditorItem";
 
 function EditorView() {
     const [items, setItems] = useState<ProxyHistoryItem[]>([])
-    const [activeItem, setActiveItem] = useState<ProxyHistoryItem | undefined>(undefined)
+    const [activeItem, setActiveItem] = useState<EditorItem | undefined>(undefined)
     const [activeItemId, setActiveItemId] = useState<number | undefined>(undefined)
 
     useEffect(() => {
@@ -30,15 +30,15 @@ function EditorView() {
                     ))}
                 </ListGroup>
             </Col>
-            <Col className="border-end border-secondary-subtle">
+            <Col style={{maxHeight: "50vh"}}
+                 className="border-end border-secondary-subtle p-1 text-start overflow-y-auto">
                 {activeItem && (
-                    // <HttpMessageDetails request={activeItem.req} id={activeItem.id}/>
-                    <Editor code={activeItem.req}/>
+                    <Editor editable={true} request={activeItem.req}/>
                 )}
             </Col>
-            <Col style={{maxHeight: "50vh"}} className="p-2 text-start overflow-y-auto">
+            <Col style={{maxHeight: "50vh"}} className="p-1 text-start overflow-y-auto">
                 {activeItem && (
-                    <HttpMessageDetails response={activeItem.res} id={activeItem.id}/>
+                    <Editor editable={false} response={activeItem.res}/>
                 )}
             </Col>
         </Row>

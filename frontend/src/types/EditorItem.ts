@@ -1,8 +1,8 @@
 import {Response} from "./Response";
 import {Request} from "./Request";
 
-export interface ProxyHistoryItem {
+export interface EditorItem {
     id: number
     req: Request
-    res: Response
+    res?: Response
 }

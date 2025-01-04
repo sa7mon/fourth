@@ -13,7 +13,7 @@ type App struct {
 	Ctx         context.Context
 	wg          sync.WaitGroup
 	History     proxy_store.ProxyHistory
-	EditorItems []proxy_store.ProxyHistoryItem
+	EditorItems []proxy_store.EditorItem
 }
 
 // NewApp creates a new App application struct
@@ -43,10 +43,17 @@ func (a *App) GetHistory() []proxy_store.ProxyHistoryItem {
 	return a.History.Requests
 }
 
-func (a *App) GetEditorItems() []proxy_store.ProxyHistoryItem { return a.EditorItems }
+func (a *App) GetEditorItems() []proxy_store.EditorItem { return a.EditorItems }
 
 func (a *App) NewEditorItem(id uint) {
-	a.EditorItems = append(a.EditorItems, a.GetHistoryItem(id))
+	hItem := a.GetHistoryItem(id)
+	item := proxy_store.EditorItem{
+		ID:  hItem.ID,
+		Req: hItem.Req,
+	}
+	//item.Res = nil // don't include original response
+	//item.ResBody = nil
+	a.EditorItems = append(a.EditorItems, item)
 }
 
 func (a *App) GetHistoryItem(id uint) proxy_store.ProxyHistoryItem {

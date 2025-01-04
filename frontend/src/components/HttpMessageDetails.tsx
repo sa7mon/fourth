@@ -1,5 +1,6 @@
 import {Highlighted} from "./Highlighted";
-import {Request, Response} from '../types/ProxyHistoryItem'
+import {Request} from '../types/Request'
+import {Response} from '../types/Response'
 import {Item, Menu, useContextMenu} from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
 import {NewEditorItem} from "../../wailsjs/go/app/App";
@@ -31,8 +32,8 @@ export const HttpMessageDetails = ({request, response, id}: HttpMessageDetailsPa
 
     const MessageDetailsContextMenu = () => {
         function sendToEditor({event, props, triggerEvent, data}: any) {
-            console.log(event, props, triggerEvent, data);
-            console.log(request)
+            // console.log(event, props, triggerEvent, data);
+            // console.log(request)
             NewEditorItem(id);
         }
 

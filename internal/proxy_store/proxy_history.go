@@ -19,6 +19,8 @@ type ProxyHistoryItem struct {
 	Sess    int64
 }
 
+type EditorItem = ProxyHistoryItem
+
 func (ph *ProxyHistoryItem) MarshalJSON() ([]byte, error) {
 	d := HttpRequestDTO{
 		Method:        ph.Req.Method,
@@ -36,8 +38,21 @@ func (ph *ProxyHistoryItem) MarshalJSON() ([]byte, error) {
 	}
 	d.Headers = headers
 
-	resD := HttpResponseDTO{Proto: ph.Res.Proto, Body: string(ph.ResBody)} // todo: not throw nil pointer if the server doesn't respond and the context is cancelled
+	dto := &struct {
+		ID  uint            `json:"id"`
+		Req HttpRequestDTO  `json:"req"`
+		Res HttpResponseDTO `json:"res"`
+	}{
+		ID:  ph.ID,
+		Req: d,
+	}
+
+	resD := HttpResponseDTO{}
 	if ph.Res != nil {
+		resD.Proto = ph.Res.Proto
+		if ph.ResBody != nil {
+			resD.Body = string(ph.ResBody)
+		}
 		resD.Status = ph.Res.StatusCode
 		resD.Size = ph.Res.ContentLength
 		headers = make(map[string]string)
@@ -45,17 +60,11 @@ func (ph *ProxyHistoryItem) MarshalJSON() ([]byte, error) {
 			headers[name] = values[0] // Only take the first header value
 		}
 		resD.Headers = headers
+
+		dto.Res = resD
 	}
 
-	return json.Marshal(&struct {
-		ID  uint            `json:"id"`
-		Req HttpRequestDTO  `json:"req"`
-		Res HttpResponseDTO `json:"res"`
-	}{
-		ID:  ph.ID,
-		Req: d,
-		Res: resD,
-	})
+	return json.Marshal(dto)
 }
 
 type HttpRequestDTO struct {
