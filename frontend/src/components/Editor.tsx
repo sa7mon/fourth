@@ -1,13 +1,14 @@
 import React, {useRef, useEffect} from 'react';
 
-import {EditorState} from '@codemirror/state';
-import {EditorView, keymap} from '@codemirror/view';
-import {defaultKeymap} from '@codemirror/commands';
-import {basicSetup} from "codemirror"
+import CodeMirror from '@uiw/react-codemirror';
 import {Request} from "../types/ProxyHistoryItem"; // also exports EditorView
+import {http} from '@codemirror/legacy-modes/mode/http'
+import {StreamLanguage} from '@codemirror/language'
+import {tokyoNightStorm} from "@uiw/codemirror-theme-tokyo-night-storm";
 
 export interface EditorParams {
     code: Request
+    editable: boolean
 }
 
 function toString(request: Request): string {
@@ -19,30 +20,27 @@ function toString(request: Request): string {
     return `${startLine}${headerText}`
 }
 
-export const Editor = ({code}: EditorParams) => {
-    const editor = useRef();
-
-    useEffect(() => {
-        const startState = EditorState.create({
-            doc: toString(code),
-            extensions: [keymap.of(defaultKeymap), basicSetup],
-        });
-
-        const view = new EditorView({state: startState, parent: editor.current});
-
-        return () => {
-            view.destroy();
-        };
+export const Editor = ({code, editable}: EditorParams) => {
+    const [value, setValue] = React.useState(toString(code))
+    // @ts-ignore
+    const onChange = React.useCallback((val, viewUpdate) => {
+        setValue(val);
     }, []);
 
     // @ts-ignore
-    return <div style={{maxHeight: "50vh"}} className="p-2 text-start overflow-y-auto col">
+    return <div style={{maxHeight: "100vh"}} className="p-2 text-start overflow-y-auto col">
         <div className="text-start">
             <div className="d-flex justify-content-between">
                 <strong>Request</strong>
                 <button className="btn btn-outline-success btn-sm">Send</button>
             </div>
-            <div className="text-start" ref={editor}></div>
+            <CodeMirror
+                editable={editable}
+                className="pt-1"
+                value={value}
+                extensions={[StreamLanguage.define(http)]}
+                onChange={onChange}
+                theme={tokyoNightStorm}/>
         </div>
     </div>
 };
