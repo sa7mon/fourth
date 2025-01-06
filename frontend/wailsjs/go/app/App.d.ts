@@ -9,3 +9,7 @@ export function GetHistory():Promise<Array<proxy_store.ProxyHistoryItem>>;
 export function GetHistoryItem(arg1:number):Promise<proxy_store.ProxyHistoryItem>;
 
 export function NewEditorItem(arg1:number):Promise<void>;
+
+export function Send(arg1:string,arg2:number):Promise<boolean>;
+
+export function UpdateEditorItem(arg1:number,arg2:proxy_store.ProxyHistoryItem):Promise<void>;

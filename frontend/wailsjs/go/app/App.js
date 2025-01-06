@@ -17,3 +17,11 @@ export function GetHistoryItem(arg1) {
 export function NewEditorItem(arg1) {
   return window['go']['app']['App']['NewEditorItem'](arg1);
 }
+
+export function Send(arg1, arg2) {
+  return window['go']['app']['App']['Send'](arg1, arg2);
+}
+
+export function UpdateEditorItem(arg1, arg2) {
+  return window['go']['app']['App']['UpdateEditorItem'](arg1, arg2);
+}

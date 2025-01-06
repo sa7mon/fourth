@@ -11,6 +11,7 @@ export interface EditorParams {
     editable: boolean
     request?: Request
     response?: Response
+    onSend?: (request: string, id: number) => void
 }
 
 function requestToString(request: Request): string {
@@ -36,7 +37,7 @@ function responseToString(response?: Response): string {
     return `${startLine}${headerText}${body}`
 }
 
-export const Editor = ({request, response, editable}: EditorParams) => {
+export const Editor = ({request, response, editable, onSend}: EditorParams) => {
     if ((request === null || request === undefined) && (response === null || response === undefined)) {
         console.log("request and response both null")
         return null
@@ -46,6 +47,12 @@ export const Editor = ({request, response, editable}: EditorParams) => {
         code = requestToString(request)
     } else {
         code = responseToString(response)
+    }
+
+    const onClickSend = () => {
+        if (onSend) {
+            onSend(value, 0)
+        }
     }
 
     const [value, setValue] = React.useState(code)
@@ -60,7 +67,7 @@ export const Editor = ({request, response, editable}: EditorParams) => {
             {request ? (
                 <div className="d-flex justify-content-between">
                     <strong>Request</strong>
-                    <button className="btn btn-outline-success btn-sm">Send</button>
+                    <button className="btn btn-outline-success btn-sm" onClick={onClickSend}>Send</button>
                 </div>
             ) : (
                 <div className="d-flex justify-content-between pb-2">

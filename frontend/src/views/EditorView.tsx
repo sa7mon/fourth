@@ -1,10 +1,12 @@
 import {Col, ListGroup, ListGroupItem, Row} from "react-bootstrap";
 import "./EditorView.scss"
-import {GetEditorItems, GetHistory, GetHistoryItem, NewEditorItem} from "../../wailsjs/go/app/App";
+import {GetEditorItems} from "../../wailsjs/go/app/App";
 import {useEffect, useState} from "react";
 import {ProxyHistoryItem} from "../types/ProxyHistoryItem";
 import {Editor} from "../components/Editor";
 import {EditorItem} from "../types/EditorItem";
+import {Send} from "../../wailsjs/go/app/App";
+import {EventsOn, EventsOnce} from "../../wailsjs/runtime";
 
 function EditorView() {
     const [items, setItems] = useState<ProxyHistoryItem[]>([])
@@ -20,6 +22,19 @@ function EditorView() {
         setActiveItem(items.find((item) => item.id === id))
     }
 
+    EventsOn("editor_new-response", (data: ProxyHistoryItem) => {
+        console.log("[EventsOnce] ", data)
+    })
+    console.log("[onSend] event listener started")
+
+    const onSend = (request: string, id: number) => {
+        Send(request, id).then((res: boolean) => {
+            console.log("[onSend] Called Send() on backend")
+        }).catch((e) => {
+            console.log("[onSend]", e)
+        })
+    }
+
     return (
         <Row style={{height: "100vh"}}>
             <Col style={{maxWidth: "11rem"}} className="bg-body-secondary">
@@ -33,7 +48,7 @@ function EditorView() {
             <Col style={{maxHeight: "50vh"}}
                  className="border-end border-secondary-subtle p-1 text-start overflow-y-auto">
                 {activeItem && (
-                    <Editor editable={true} request={activeItem.req}/>
+                    <Editor onSend={onSend} editable={true} request={activeItem.req}/>
                 )}
             </Col>
             <Col style={{maxHeight: "50vh"}} className="p-1 text-start overflow-y-auto">

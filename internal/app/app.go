@@ -1,10 +1,13 @@
 package app
 
 import (
+	"bufio"
 	"context"
+	"fmt"
 	"fourth/internal/proxy_store"
 	"log"
 	"net/http"
+	"strings"
 	"sync"
 )
 
@@ -43,19 +46,29 @@ func (a *App) GetHistory() []proxy_store.ProxyHistoryItem {
 	return a.History.Requests
 }
 
-func (a *App) GetEditorItems() []proxy_store.EditorItem { return a.EditorItems }
-
-func (a *App) NewEditorItem(id uint) {
-	hItem := a.GetHistoryItem(id)
-	item := proxy_store.EditorItem{
-		ID:  hItem.ID,
-		Req: hItem.Req,
+// TODO: don't make this a receiver of App. Convert to singleton pattern for app-wide state so we can get state from anywhere
+func (a *App) Send(rawReq string, id uint) bool {
+	fmt.Println("[EditorItem.Send] Received raw request:", rawReq)
+	reader := bufio.NewReader(strings.NewReader(fmt.Sprintf("%s\n", rawReq)))
+	req, err := http.ReadRequest(reader)
+	if err != nil {
+		fmt.Println("Error reading request: ", err)
+		return false
 	}
-	//item.Res = nil // don't include original response
-	//item.ResBody = nil
-	a.EditorItems = append(a.EditorItems, item)
-}
 
-func (a *App) GetHistoryItem(id uint) proxy_store.ProxyHistoryItem {
-	return a.History.Requests[id-1]
+	client := &http.Client{}
+	response, resErr := client.Do(req)
+	if resErr != nil {
+		fmt.Println(err)
+		return false
+	}
+	fmt.Println("[Send] Response status: ", response.Status)
+
+	// Get old editor item, update, then save
+	editorItem := a.GetEditorItems()[id]
+	editorItem.Req = req
+	editorItem.Res = response
+	a.UpdateEditorItem(id, editorItem)
+
+	return true
 }
