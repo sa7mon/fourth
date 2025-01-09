@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"fourth/internal/proxy_store"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"log"
 	"net/http"
 	"strings"
@@ -16,7 +17,7 @@ type App struct {
 	Ctx         context.Context
 	wg          sync.WaitGroup
 	History     proxy_store.ProxyHistory
-	EditorItems []proxy_store.EditorItem
+	EditorItems []proxy_store.ProxyHistoryItem
 }
 
 // NewApp creates a new App application struct
@@ -47,20 +48,26 @@ func (a *App) GetHistory() []proxy_store.ProxyHistoryItem {
 }
 
 // TODO: don't make this a receiver of App. Convert to singleton pattern for app-wide state so we can get state from anywhere
-func (a *App) Send(rawReq string, id uint) bool {
-	fmt.Println("[EditorItem.Send] Received raw request:", rawReq)
+// TODO: support HTTPS
+func (a *App) Send(rawReq string, id uint) *proxy_store.ProxyHistoryItem {
 	reader := bufio.NewReader(strings.NewReader(fmt.Sprintf("%s\n", rawReq)))
 	req, err := http.ReadRequest(reader)
 	if err != nil {
 		fmt.Println("Error reading request: ", err)
-		return false
+		return nil
 	}
+
+	// Since the req.URL will not have all the information set,
+	// such as protocol scheme and host, we create a new URL
+	req.RequestURI = ""
+	req.URL.Scheme = "http"
+	req.URL.Host = req.Host
 
 	client := &http.Client{}
 	response, resErr := client.Do(req)
 	if resErr != nil {
-		fmt.Println(err)
-		return false
+		fmt.Println("[EditorItem.Send] Error sending request: ", resErr)
+		return nil
 	}
 	fmt.Println("[Send] Response status: ", response.Status)
 
@@ -70,5 +77,14 @@ func (a *App) Send(rawReq string, id uint) bool {
 	editorItem.Res = response
 	a.UpdateEditorItem(id, editorItem)
 
-	return true
+	//dump, err := httputil.DumpResponse(response, true)
+	//if err != nil {
+	//	fmt.Println("[EditorItem.Send] Error dumping response: ", err)
+	//	return ""
+	//}
+
+	// notify frontend
+	runtime.EventsEmit(a.Ctx, "editor_new-response", &editorItem)
+
+	return &editorItem
 }

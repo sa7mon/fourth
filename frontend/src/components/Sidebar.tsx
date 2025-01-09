@@ -3,6 +3,7 @@ import {faList} from "@fortawesome/free-solid-svg-icons";
 import "./Sidebar.scss"
 import {faFilePen} from "@fortawesome/free-solid-svg-icons/faFilePen";
 import {NavLink} from "react-router-dom";
+import React from "react";
 
 export const Sidebar = () => {
     return (

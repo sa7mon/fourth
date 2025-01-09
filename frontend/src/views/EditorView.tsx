@@ -12,6 +12,7 @@ function EditorView() {
     const [items, setItems] = useState<ProxyHistoryItem[]>([])
     const [activeItem, setActiveItem] = useState<EditorItem | undefined>(undefined)
     const [activeItemId, setActiveItemId] = useState<number | undefined>(undefined)
+    const [activeItemResponse, setActiveItemResponse] = useState<string | undefined>(undefined)
 
     useEffect(() => {
         GetEditorItems().then(data => setItems(data))
@@ -24,6 +25,7 @@ function EditorView() {
 
     EventsOn("editor_new-response", (data: ProxyHistoryItem) => {
         console.log("[EventsOnce] ", data)
+        setActiveItem(data)
     })
     console.log("[onSend] event listener started")
 

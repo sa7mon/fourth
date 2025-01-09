@@ -2,7 +2,7 @@ package app
 
 import "fourth/internal/proxy_store"
 
-func (a *App) GetEditorItems() []proxy_store.EditorItem { return a.EditorItems }
+func (a *App) GetEditorItems() []proxy_store.ProxyHistoryItem { return a.EditorItems }
 
 func (a *App) NewEditorItem(id uint) {
 	hItem := a.GetHistoryItem(id)
@@ -19,6 +19,6 @@ func (a *App) GetHistoryItem(id uint) proxy_store.ProxyHistoryItem {
 	return a.History.Requests[id-1]
 }
 
-func (a *App) UpdateEditorItem(id uint, newItem proxy_store.EditorItem) {
+func (a *App) UpdateEditorItem(id uint, newItem proxy_store.ProxyHistoryItem) {
 	a.EditorItems[id] = newItem
 }

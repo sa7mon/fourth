@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import CodeMirror from '@uiw/react-codemirror';
 import {Request} from "../types/Request"; // also exports EditorView
@@ -38,16 +38,23 @@ function responseToString(response?: Response): string {
 }
 
 export const Editor = ({request, response, editable, onSend}: EditorParams) => {
+    const [value, setValue] = React.useState('')
+
     if ((request === null || request === undefined) && (response === null || response === undefined)) {
         console.log("request and response both null")
         return null
     }
-    let code = ""
-    if (request) {
-        code = requestToString(request)
-    } else {
-        code = responseToString(response)
-    }
+
+    useEffect(() => {
+        // let code = ""
+        if (request) {
+            setValue(requestToString(request))
+        } else {
+            if (response) {
+                setValue(responseToString(response))
+            }
+        }
+    }, [request, response])
 
     const onClickSend = () => {
         if (onSend) {
@@ -55,7 +62,6 @@ export const Editor = ({request, response, editable, onSend}: EditorParams) => {
         }
     }
 
-    const [value, setValue] = React.useState(code)
     // @ts-ignore
     const onChange = React.useCallback((val, viewUpdate) => {
         setValue(val);
